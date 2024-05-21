@@ -32,11 +32,14 @@ const createTodo = async (req, res) => {
 
 const getTodos = async (req, res) => {
   try {
-    const Todos = await todoServices.findTodos({
+    const todos = await todoServices.findTodos({
       user: new mongoose.Types.ObjectId(req.userId),
     });
+    if (todos.length === 0)
+      return res.status(401).json({ error: "No Todo data found against this user." });
+
     return res.status(200).json({
-      data: { Todo: Todos },
+      data: { Todos: todos },
       message: `Todos for ${req.userId} retrieved successfully`,
     });
   } catch (e) {
