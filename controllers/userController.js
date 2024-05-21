@@ -24,7 +24,7 @@ const signup = async (req, res) => {
           "Wrong Format for Password: Ensure Atleast 8 characters, atleast 1 uppercase, one lowercase and one numeric character!",
       });
 
-    const user = await userServices.findUser({ email: email });
+    const user = await userServices.findUser({ email: email.toLowerCase() });
     if (user) {
       return res.status(422).json({ error: "User already exist!" });
     }
@@ -67,7 +67,7 @@ const login = async (req, res) => {
 
     if (!email || !password) return res.send("Cannot accept an empty field!");
 
-    const user = await userServices.findUser({ email: email });
+    const user = await userServices.findUser({ email: email.toLowerCase() });
     if (!user) {
       return res.status(404).json({ error: "User does not exist!" });
     }
@@ -146,7 +146,7 @@ const forgetPassword = async (req, res) => {
     if (!email)
       return res.status(404).json({ error: "Cannot accept an empty field!" });
 
-    const user = await userServices.findUser({ email: email });
+    const user = await userServices.findUser({ email: email.toLowerCase() });
     if (!user) {
       return res.status(404).json({ error: "Invaid Email!" });
     }
