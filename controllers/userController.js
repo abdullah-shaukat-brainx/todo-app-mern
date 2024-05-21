@@ -112,7 +112,6 @@ const changePassword = async (req, res) => {
 
     const matchUser = await userServices.findUser({ email: req.userEmail });
     if (!matchUser) {
-      console.log(matchUser);
       return res.status(404).json({ error: "User does not exist!" });
     }
     const matchPassword = await bcrypt.compare(oldPassword, matchUser.password);
