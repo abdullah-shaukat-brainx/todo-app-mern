@@ -7,7 +7,7 @@ const createTodo = async (req, res) => {
     const { text, status } = req.body;
     if (!text || !status)
       return res
-        .status(500)
+        .status(422)
         .json({ error: "Text and Status fields cant be empty!" });
 
     const savedTodo = await todoServices.addTodo({
