@@ -1,4 +1,4 @@
-const { EMAIL_REGEX } = require("../constants/index");
+const { EMAIL_REGEX,PASSWORD_REGEX } = require("../constants/index");
 
 const isValidEmailFormat = (email) => {
   return EMAIL_REGEX.test(String(email).toLowerCase());

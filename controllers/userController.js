@@ -20,7 +20,7 @@ const signup = async (req, res) => {
     if (!utilServices.isValidPasswordFormat(password))
       return res.status(422).json({
         error:
-          "Wrong Format for Password: Ensure Atleast 8 characters, atleast 1 uppercase, one lowercase and one numeric character!",
+          "Wrong Format for Password",
       });
 
     const user = await userServices.findUser({ email: email });
@@ -158,7 +158,7 @@ const changePassword = async (req, res) => {
     if (!utilServices.isValidPasswordFormat(newPassword))
       return res.status(422).json({
         error:
-          "Wrong Format for new Password: Ensure Atleast 8 characters, atleast 1 uppercase, one lowercase and one numeric character!",
+          "Wrong Format for new Password!",
       });
 
     const matchUser = await userServices.findUser({ _id: req.userId });
