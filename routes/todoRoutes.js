@@ -6,9 +6,9 @@ const { todoController } = require("../controllers");
 
 router.use(express.urlencoded({ extended: false }));
 
-router.get("/getTodos", auth.auth, todoController.getTodos);
-router.post("/createTodo", auth.auth, todoController.createTodo);
-router.put("/updateTodo/:id", auth.auth, todoController.updateTodo);
-router.delete("/deleteTodo/:id", auth.auth, todoController.deleteTodo);
+router.get("/get_todos", todoController.getTodos);
+router.post("/create_todo", todoController.createTodo);
+router.put("/update_todo/:id",todoController.updateTodo);
+router.delete("/delete_todo/:id", todoController.deleteTodo);
 
 module.exports = router;

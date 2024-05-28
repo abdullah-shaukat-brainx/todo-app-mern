@@ -10,7 +10,7 @@ const findUser = async (condition) => {
 };
 
 const updateUser = async (condition, data) => {
-  const user = await User.findOneAndUpdate(condition, data);
+  const user = await User.findOneAndUpdate(condition, data,{new:true});
   return user;
 };
 

@@ -10,7 +10,7 @@ const TodoSchema = new mongoose.Schema(
       type: String,
       default: "Uncompleted",
     },
-    user: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
