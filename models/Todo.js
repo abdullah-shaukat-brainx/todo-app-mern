@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { TODO_STATUS_ENUM } = require("../constants/index");
 const TodoSchema = new mongoose.Schema(
   {
     text: {
@@ -8,6 +8,7 @@ const TodoSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      enum:TODO_STATUS_ENUM,
       default: "Uncompleted",
     },
     user_id: {

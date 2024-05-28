@@ -32,7 +32,7 @@ userSchema.pre("save", async function (next) {
   try {
     // Convert email to lowercase
     this.email = this.email.toLowerCase();
-    
+
     if (this.isModified("password")) {
       const hashedPassword = await bcrypt.hash(
         this.password,
@@ -52,7 +52,7 @@ userSchema.pre("findOneAndUpdate", async function (next) {
     if (this._update.email) {
       this._update.email = this._update.email.toLowerCase();
     }
-    
+
     if (this._update?.password) {
       const hashedPassword = await bcrypt.hash(
         this._update.password,
@@ -66,7 +66,7 @@ userSchema.pre("findOneAndUpdate", async function (next) {
   }
 });
 
-userSchema.set('timestamps', { createdAt: true, updatedAt: true });
+userSchema.set("timestamps", { createdAt: true, updatedAt: true });
 
 const User = mongoose.model("User", userSchema);
 
