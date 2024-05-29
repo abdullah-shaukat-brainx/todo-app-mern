@@ -13,9 +13,9 @@ const auth = async (req, res, next) => {
       const userVerified = await userServices.findUser({
         email: req.userEmail,
       });
-      if (userVerified.is_email_verfied === false) {
+      if (!userVerified.is_email_verfied) {
         return res.status(401).json({ error: "User not verified" });
-        
+
       }
       next();
     } else {

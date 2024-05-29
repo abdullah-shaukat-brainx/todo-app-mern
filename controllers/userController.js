@@ -88,7 +88,7 @@ const login = async (req, res) => {
       email: email,
     });
 
-    if (foundUser.is_email_verified === false) {
+    if (!foundUser.is_email_verified) {
       const currDate = new Date()
       if(foundUser.otp_validity>currDate)
         {
