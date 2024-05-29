@@ -1,4 +1,3 @@
-const express = require("express");
 const { todoServices } = require("../services");
 const mongoose = require("mongoose");
 
@@ -13,7 +12,7 @@ const createTodo = async (req, res) => {
     const savedTodo = await todoServices.addTodo({
       text: text,
       status: status,
-      user: new mongoose.Types.ObjectId(req.userId),
+      user_id: new mongoose.Types.ObjectId(req.userId),
     });
 
     if (!savedTodo) {
@@ -33,10 +32,12 @@ const createTodo = async (req, res) => {
 const getTodos = async (req, res) => {
   try {
     const todos = await todoServices.findTodos({
-      user: new mongoose.Types.ObjectId(req.userId),
+      user_id: new mongoose.Types.ObjectId(req.userId),
     });
     if (todos.length === 0)
-      return res.status(401).json({ error: "No Todo data found against this user." });
+      return res
+        .status(401)
+        .json({ error: "No Todo data found against this user." });
 
     return res.status(200).json({
       data: { Todos: todos },
