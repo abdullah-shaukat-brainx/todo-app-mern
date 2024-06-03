@@ -1,21 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 require("dotenv").config();
+const cors = require('cors');
 
-const { userRoutes, todoRoutes } = require("./routes");
-
+app.use(cors());
 app.use(express.json());
-app.use("/user", userRoutes);
-app.use("/todo", todoRoutes);
-
+app.use("/api/v1", require("./routes"));
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Listening for connections at port ${PORT}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Connected to DB.`);
+      console.log(`Listening for connections at port ${process.env.PORT}`);
     });
   })
   .catch(() => {

@@ -1,18 +1,29 @@
-const SECRET_KEY = process.env.SECRET_KEY;
-const jwt = require("jsonwebtoken");
-const auth = (req, res, next) => {
+const { jwtServices, userServices } = require("../services");
+const auth = async (req, res, next) => {
   try {
     let token = req.headers.authorization;
     if (token) {
       token = token.split(" ")[1];
-      let user = jwt.verify(token, SECRET_KEY);
+
+      let user = jwtServices.verifyToken(token, process.env.SECRET_KEY);
       req.userId = user?.id;
       req.userEmail = user?.email;
-    } else res.status(401).json({ error: "Unauthorized user" });
-    next();
+
+
+      const userVerified = await userServices.findUser({
+        email: req.userEmail,
+      });
+      if (!userVerified.is_email_verfied) {
+        return res.status(401).json({ error: "User not verified" });
+
+      }
+      next();
+    } else {
+      return res.status(401).json({ error: "Unauthorized user" });
+    }
   } catch (e) {
-    res.status(401).json({ error: "Unauthorized user" });
     console.log(e);
+    return res.status(401).json({ error: "Unauthorized user" });
   }
 };
 module.exports = auth;

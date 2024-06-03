@@ -1,5 +1,7 @@
 module.exports = {
   userServices: require("./userServices"),
   todoServices: require("./todoServices"),
-  utilServices: require("./utilServices")
+  emailServices: require("./emailServices"),
+  utilServices: require("./utilServices"),
+  jwtServices: require("./jwtServices"),
 };

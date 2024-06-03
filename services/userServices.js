@@ -9,14 +9,16 @@ const findUser = async (condition) => {
   return user;
 };
 
-
-const updatePassword = async (condition, data) => {
-  const user = await User.findOneAndUpdate(condition, data);
+const updateUser = async (condition, data) => {
+  const user = await User.findOneAndUpdate(condition, data,{new:true});
   return user;
 };
+
+const aggregate = async (query) => await User.aggregate(query);
 
 module.exports = {
   findUser,
   addUser,
-  updatePassword,
+  updateUser,
+  aggregate,
 };

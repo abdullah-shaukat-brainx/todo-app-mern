@@ -1,34 +1,19 @@
+const { EMAIL_REGEX,PASSWORD_REGEX } = require("../constants/index");
 
 const isValidEmailFormat = (email) => {
-  const re =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
+  return EMAIL_REGEX.test(String(email).toLowerCase());
 };
 
 const isValidPasswordFormat = (password) => {
-  if (password.length < 8) {
-    return false;
-  }
-
-  let upperCase = false;
-  let numeric = false;
-  let lowerCase = false;
-  for (let i = 0; i < password.length; i++) {
-    if (password[i] >= "a" && password[i] <= "z") {
-      lowerCase = true;
-    } else if (password[i] >= "A" && password[i] <= "Z") {
-      upperCase = true;
-    } else if (password[i] >= "0" && password[i] <= "9") {
-      numeric = true;
-    }
-  }
-  if (upperCase && lowerCase && numeric) {
-    return true;
-  }
-  return false;
+  return PASSWORD_REGEX.test(String(password))
 };
+
+function getRandomFourDigit() {
+  return Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+}
 
 module.exports = {
   isValidEmailFormat,
   isValidPasswordFormat,
+  getRandomFourDigit,
 };
