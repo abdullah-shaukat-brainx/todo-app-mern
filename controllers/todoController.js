@@ -36,7 +36,7 @@ const getTodos = async (req, res) => {
     });
 
     return res.status(200).json({
-      data: { Todos: todos },
+      data: { Todos: todos.reverse() },
       message: `Todos for ${req.userEmail} retrieved successfully`,
     });
   } catch (e) {
