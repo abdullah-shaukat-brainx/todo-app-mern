@@ -9,21 +9,21 @@ const auth = async (req, res, next) => {
       req.userId = user?.id;
       req.userEmail = user?.email;
 
-
       const userVerified = await userServices.findUser({
-        email: req.userEmail,
+        _id: req.userId,
       });
-      if (!userVerified.is_email_verfied) {
-        return res.status(401).json({ error: "User not verified" });
-
+      if (!userVerified.is_email_verified) {
+        return res.status(401).send({ error: "User not verified" });
       }
       next();
     } else {
-      return res.status(401).json({ error: "Unauthorized user" });
+      return res
+        .status(401)
+        .send({ error: "Unauthorized user: Token not found" });
     }
   } catch (e) {
     console.log(e);
-    return res.status(401).json({ error: "Unauthorized user" });
+    return res.status(401).send({ error: "Unauthorized user: Invalid Token" });
   }
 };
 module.exports = auth;

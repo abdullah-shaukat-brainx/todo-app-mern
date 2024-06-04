@@ -1,11 +1,13 @@
 const TODO_STATUS_ENUM = {
   completed: "Completed",
   pending: "Pending",
+  ongoing: "Ongoing",
 };
 
 const TODO_STATUS_ARRAY = [
   TODO_STATUS_ENUM.completed,
   TODO_STATUS_ENUM.pending,
+  TODO_STATUS_ENUM.ongoing,
 ];
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

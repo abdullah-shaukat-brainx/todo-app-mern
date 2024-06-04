@@ -7,7 +7,7 @@ const createTodo = async (req, res) => {
     if (!text || !status)
       return res
         .status(422)
-        .json({ error: "Text and Status fields cant be empty!" });
+        .send({ error: "Text and Status fields cant be empty!" });
 
     const savedTodo = await todoServices.addTodo({
       text: text,
@@ -16,16 +16,16 @@ const createTodo = async (req, res) => {
     });
 
     if (!savedTodo) {
-      return res.status(441).json({ error: "Todo not Created" });
+      return res.status(441).send({ error: "Todo not Created" });
     }
 
     return res.status(200).json({
-      data: savedTodo,
+      // data: savedTodo,
       message: "Todo added successfully!",
     });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ error: "Unable to create Todo." });
+    return res.status(500).send({ error: "Unable to create Todo." });
   }
 };
 
@@ -34,18 +34,14 @@ const getTodos = async (req, res) => {
     const todos = await todoServices.findTodos({
       user_id: new mongoose.Types.ObjectId(req.userId),
     });
-    if (todos.length === 0)
-      return res
-        .status(401)
-        .json({ error: "No Todo data found against this user." });
 
     return res.status(200).json({
       data: { Todos: todos },
-      message: `Todos for ${req.userId} retrieved successfully`,
+      message: `Todos for ${req.userEmail} retrieved successfully`,
     });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ error: "Unable to retrieve Todos." });
+    return res.status(500).send({ error: "Unable to retrieve Todos." });
   }
 };
 
@@ -55,11 +51,11 @@ const updateTodo = async (req, res) => {
     const { text, status } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(todoId)) {
-      return res.status(400).json({ error: "Invalid Todo ID." });
+      return res.status(400).send({ error: "Invalid Todo ID." });
     }
 
     if (!todoId || !text || !status)
-      return res.status(500).json({ error: "Todo information missing." });
+      return res.status(500).send({ error: "Todo information missing." });
 
     const updatedTodo = await todoServices.findAndUpdateTodo(
       { _id: new mongoose.Types.ObjectId(todoId) },
@@ -68,16 +64,16 @@ const updateTodo = async (req, res) => {
     );
 
     if (!updatedTodo) {
-      return res.status(404).json({ error: "Wrong todo Id." });
+      return res.status(404).send({ error: "Wrong todo Id." });
     }
 
     res.status(200).json({
-      data: updatedTodo,
+      // data: updatedTodo,
       message: `Todo with id: ${todoId} updated successfully!`,
     });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ error: "Unable to update Todo." });
+    return res.status(500).send({ error: "Unable to update Todo." });
   }
 };
 
@@ -87,7 +83,7 @@ const deleteTodo = async (req, res) => {
     if (!todoId)
       return res
         .status(400)
-        .json({ error: "Todo id is missing from request parameters." });
+        .send({ error: "Todo id is missing from request parameters." });
 
     const deletedTodo = await todoServices.findAndDeleteTodo({
       _id: todoId,
@@ -96,15 +92,15 @@ const deleteTodo = async (req, res) => {
     if (!deletedTodo)
       return res
         .status(404)
-        .json({ error: "Todo item with the entered id does not exist." });
+        .send({ error: "Todo item with the entered id does not exist." });
 
     return res.status(200).json({
-      data: deletedTodo,
+      // data: deletedTodo,
       message: `Todo with id: ${todoId} deleted successfully!`,
     });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ error: "Error occoured at the server." });
+    return res.status(500).send({ error: "Error occoured at the server." });
   }
 };
 
