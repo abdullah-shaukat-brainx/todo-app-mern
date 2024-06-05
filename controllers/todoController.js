@@ -1,3 +1,4 @@
+const { options } = require("../routes");
 const { todoServices } = require("../services");
 const mongoose = require("mongoose");
 
@@ -20,7 +21,6 @@ const createTodo = async (req, res) => {
     }
 
     return res.status(200).json({
-      // data: savedTodo,
       message: "Todo added successfully!",
     });
   } catch (e) {
@@ -30,13 +30,42 @@ const createTodo = async (req, res) => {
 };
 
 const getTodos = async (req, res) => {
+  const page = parseInt(req?.query?.page) || 1;
+  const limit = parseInt(req?.query?.limit) || 5;
+  const skip = (page - 1) * limit;
   try {
-    const todos = await todoServices.findTodos({
-      user_id: new mongoose.Types.ObjectId(req.userId),
-    });
+    const result = await todoServices.aggregateTodoQuery([
+      {
+        $match: {
+          user_id: new mongoose.Types.ObjectId(req.userId),
+          ...(req?.query?.searchQuery && {
+            text: { $regex: req.query.searchQuery, $options: "i" },
+          }),
+        },
+      },
+      {
+        $facet: {
+          totalCount: [{ $count: "count" }],
+          paginatedResults: [
+            { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limit },
+          ],
+        },
+      },
+      {
+        $project: {
+          totalCount: { $arrayElemAt: ["$totalCount.count", 0] },
+          paginatedResults: 1,
+        },
+      },
+    ]);
 
     return res.status(200).json({
-      data: { Todos: todos.reverse() },
+      data: {
+        Todos: result[0]?.paginatedResults || [],
+        count: result[0]?.totalCount || 0,
+      },
       message: `Todos for ${req.userEmail} retrieved successfully`,
     });
   } catch (e) {
