@@ -1,11 +1,11 @@
+const mongoose = require("mongoose");
 const { Todo } = require("../models");
-
 const addTodo = async (data) => {
   return await Todo.create(data);
 };
 
-const findTodos = async (condition) => {
-  const todos = await Todo.find(condition);
+const findTodos = async (condition, limit, skip) => {
+  const todos = await Todo.find(condition).skip(skip).limit(limit);
   return todos;
 };
 
@@ -19,9 +19,14 @@ const findAndDeleteTodo = async (condition) => {
   return todo;
 };
 
+const aggregateTodoQuery = async (query) => {
+  return await Todo.aggregate(query);
+};
+
 module.exports = {
   addTodo,
   findTodos,
   findAndUpdateTodo,
   findAndDeleteTodo,
+  aggregateTodoQuery,
 };
